@@ -37,7 +37,7 @@ pnpm install
 echo "Creating the .env file..."
 CLIENT_ID=$(prompt_for_input "Enter your Spotify Client ID" "your-client-id")
 CLIENT_SECRET=$(prompt_for_input "Enter your Spotify Client Secret" "your-client-secret")
-REDIRECT_URI=$(prompt_for_input "Enter your Spotify Redirect URI" "http://localhost:8888/callback")
+REDIRECT_URI=$(prompt_for_input "Enter your Spotify Redirect URI" "http://localhost/redirect")
 
 # Write the .env file
 cat <<EOF > .env
