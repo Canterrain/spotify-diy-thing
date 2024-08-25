@@ -13,7 +13,7 @@ sudo apt-get install -y python3 python3-pip python3-venv git npm
 
 # Install pnpm
 echo "Installing pnpm..."
-npm install -g pnpm
+sudo npm install -g pnpm
 
 # Clone the repository
 echo "Cloning the repository..."
