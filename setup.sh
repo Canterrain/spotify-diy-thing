@@ -6,6 +6,12 @@ prompt_for_input() {
   echo "${input:-$2}"
 }
 
+# Function to extract authorization code from URL
+extract_code_from_url() {
+  local url="$1"
+  echo "${url##*code=}"
+}
+
 # Install necessary packages
 echo "Installing necessary packages..."
 sudo apt-get update
@@ -37,12 +43,14 @@ pnpm install
 echo "Creating the .env file..."
 CLIENT_ID=$(prompt_for_input "Enter your Spotify Client ID" "your-client-id")
 CLIENT_SECRET=$(prompt_for_input "Enter your Spotify Client Secret" "your-client-secret")
+SPOTIFY_USERNAME=$(prompt_for_input "Enter your Spotify Username" "your-username")
 REDIRECT_URI=$(prompt_for_input "Enter your Spotify Redirect URI" "http://localhost/redirect")
 
 # Write the .env file
 cat <<EOF > .env
 SPOTIPY_CLIENT_ID="$CLIENT_ID"
 SPOTIPY_CLIENT_SECRET="$CLIENT_SECRET"
+SPOTIPY_USERNAME="$SPOTIFY_USERNAME"
 SPOTIPY_REDIRECT_URI="$REDIRECT_URI"
 EOF
 
@@ -52,9 +60,15 @@ echo ".env file created successfully!"
 echo "Setting executable permissions for generateToken.py..."
 chmod +x python/generateToken.py
 
-# Generate the Spotify token using the virtual environment's Python
-echo "Generating Spotify token..."
-python3 python/generateToken.py
+# Generate the Spotify token
+echo "Please go to the provided URL, authorize access, and paste the full redirect URL here."
+read -p "Enter the full redirect URL: " redirect_url
+
+# Extract the authorization code from the URL
+authorization_code=$(extract_code_from_url "$redirect_url")
+
+# Pass the extracted code to generateToken.py
+python3 python/generateToken.py "$authorization_code"
 
 # Build and start the production version of the application
 echo "Building and starting the production version..."
