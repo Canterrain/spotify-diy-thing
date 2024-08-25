@@ -61,19 +61,14 @@ echo "Setting executable permissions for generateToken.py..."
 chmod +x python/generateToken.py
 
 # Generate the Spotify token
-echo "Please go to the provided URL, authorize access, and paste the full redirect URL here."
-read -p "Enter the full redirect URL: " redirect_url
-
-# Extract the authorization code from the URL
-authorization_code=$(extract_code_from_url "$redirect_url")
-
-# Pass the extracted code to generateToken.py
-python3 python/generateToken.py "$authorization_code"
+echo "The authorization process will now provide a URL. Please visit the URL in your browser and paste the authorization code here."
+python3 python/generateToken.py
 
 # Build and start the production version of the application
 echo "Building and starting the production version..."
 pnpm build
 pnpm start &  # Run the app in the background
+
 # Read the redirect URL from the .env file
 REDIRECT_URI=$(grep -oP '(?<=SPOTIPY_REDIRECT_URI=).+' .env)
 
@@ -81,3 +76,5 @@ REDIRECT_URI=$(grep -oP '(?<=SPOTIPY_REDIRECT_URI=).+' .env)
 echo "Launching Chromium in full-screen mode to $REDIRECT_URI..."
 chromium-browser --kiosk "$REDIRECT_URI" --noerrdialogs --disable-infobars --disable-session-crashed-bubble --disable-gpu
 
+# Inform the user to activate the virtual environment when needed
+echo "To activate the virtual environment later, run 'source venv/bin/activate'"
