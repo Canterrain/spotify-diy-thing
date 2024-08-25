@@ -73,9 +73,11 @@ python3 python/generateToken.py "$authorization_code"
 # Build and start the production version of the application
 echo "Building and starting the production version..."
 pnpm build
-pnpm start
+pnpm start &  # Run the app in the background
+# Read the redirect URL from the .env file
+REDIRECT_URI=$(grep -oP '(?<=SPOTIPY_REDIRECT_URI=).+' .env)
 
-echo "Setup is complete. The app is now running."
+# Launch Chromium in full-screen mode with GPU acceleration disabled
+echo "Launching Chromium in full-screen mode to $REDIRECT_URI..."
+chromium-browser --kiosk "$REDIRECT_URI" --noerrdialogs --disable-infobars --disable-session-crashed-bubble --disable-gpu
 
-# Inform the user to activate the virtual environment when needed
-echo "To activate the virtual environment later, run 'source venv/bin/activate'"
