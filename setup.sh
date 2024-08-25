@@ -37,18 +37,18 @@ pnpm install
 echo "Creating the .env file..."
 CLIENT_ID=$(prompt_for_input "Enter your Spotify Client ID" "your-client-id")
 CLIENT_SECRET=$(prompt_for_input "Enter your Spotify Client Secret" "your-client-secret")
-REFRESH_TOKEN=$(prompt_for_input "Enter your Spotify Refresh Token" "your-refresh-token")
+REDIRECT_URI=$(prompt_for_input "Enter your Spotify Redirect URI" "http://localhost:8888/callback")
 
 # Write the .env file
 cat <<EOF > .env
 SPOTIPY_CLIENT_ID="$CLIENT_ID"
 SPOTIPY_CLIENT_SECRET="$CLIENT_SECRET"
-SPOTIPY_REFRESH_TOKEN="$REFRESH_TOKEN"
+SPOTIPY_REDIRECT_URI="$REDIRECT_URI"
 EOF
 
 echo ".env file created successfully!"
 
-# Ensure generateToken.py in the python folder is executable
+# Ensure generateToken.py is executable
 echo "Setting executable permissions for generateToken.py..."
 chmod +x python/generateToken.py
 
