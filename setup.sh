@@ -41,20 +41,20 @@ REFRESH_TOKEN=$(prompt_for_input "Enter your Spotify Refresh Token" "your-refres
 
 # Write the .env file
 cat <<EOF > .env
-SPOTIPY_CLIENT_ID=$CLIENT_ID
-SPOTIPY_CLIENT_SECRET=$CLIENT_SECRET
-SPOTIPY_REFRESH_TOKEN=$REFRESH_TOKEN
+SPOTIPY_CLIENT_ID="$CLIENT_ID"
+SPOTIPY_CLIENT_SECRET="$CLIENT_SECRET"
+SPOTIPY_REFRESH_TOKEN="$REFRESH_TOKEN"
 EOF
 
 echo ".env file created successfully!"
 
-# Ensure generateToken.py is executable
+# Ensure generateToken.py in the python folder is executable
 echo "Setting executable permissions for generateToken.py..."
-chmod +x generateToken.py
+chmod +x python/generateToken.py
 
 # Generate the Spotify token using the virtual environment's Python
 echo "Generating Spotify token..."
-python3 generateToken.py
+python3 python/generateToken.py
 
 # Build and start the production version of the application
 echo "Building and starting the production version..."
