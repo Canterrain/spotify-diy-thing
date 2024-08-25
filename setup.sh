@@ -6,7 +6,7 @@ prompt_for_input() {
   echo "${input:-$2}"
 }
 
-# Function to extract authorization code from URL
+# Function to extract the authorization code from the URL
 extract_code_from_url() {
   local url="$1"
   echo "${url##*code=}"
@@ -61,8 +61,14 @@ echo "Setting executable permissions for generateToken.py..."
 chmod +x python/generateToken.py
 
 # Generate the Spotify token
-echo "The authorization process will now provide a URL. Please visit the URL in your browser and paste the authorization code here."
-python3 python/generateToken.py
+echo "Please visit the provided URL, authorize access, and then paste the full redirect URL here."
+read -p "Enter the full redirect URL: " redirect_url
+
+# Extract the authorization code from the URL
+authorization_code=$(extract_code_from_url "$redirect_url")
+
+# Pass the extracted code to generateToken.py
+python3 python/generateToken.py "$authorization_code"
 
 # Build and start the production version of the application
 echo "Building and starting the production version..."
@@ -78,3 +84,4 @@ chromium-browser --kiosk "$REDIRECT_URI" --noerrdialogs --disable-infobars --dis
 
 # Inform the user to activate the virtual environment when needed
 echo "To activate the virtual environment later, run 'source venv/bin/activate'"
+
