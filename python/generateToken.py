@@ -9,20 +9,26 @@ def generate_token():
 
     client_id = os.getenv("SPOTIPY_CLIENT_ID")
     client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
-    refresh_token = os.getenv("SPOTIPY_REFRESH_TOKEN")
+    redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
+    username = os.getenv("SPOTIPY_USERNAME")
 
-    # Authenticate and get access token
-    sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri="http://localhost:8888/callback", scope="user-read-playback-state")
-    token_info = sp_oauth.refresh_access_token(refresh_token)
+    # Define the scope for the permissions needed
+    scope = 'user-read-currently-playing,user-modify-playback-state,playlist-read-private,playlist-read-collaborative'
 
-    # Get the access token from the token info
-    access_token = token_info['access_token']
+    # Set up Spotify OAuth with the defined scope and headless flow
+    sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, scope=scope, open_browser=False)
 
-    # Store the access token in the .env file
-    env_file = ".env"
-    set_key(env_file, "SPOTIFY_ACCESS_TOKEN", access_token)
+    # Print the authorization URL to the terminal
+    auth_url = sp_oauth.get_authorize_url()
+    print(f"Please visit this URL to authorize access: {auth_url}")
 
-    print("Access token generated and saved to .env file")
+    # Prompt the user for the authorization code from Spotify
+    auth_code = input("Enter the authorization code here: ")
+
+    # Exchange the authorization code for an access token and refresh token
+    token_info = sp_oauth.get_access_token(auth_code)
+	@@ -27,7 +37,4 @@ def generate_token(auth_code):
+    print(f"Refresh token generated and saved to .env file for user: {username}")
 
 if __name__ == "__main__":
     generate_token()
