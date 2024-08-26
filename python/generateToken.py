@@ -18,13 +18,6 @@ def generate_token(auth_code):
     # Set up Spotify OAuth with the defined scope and headless flow
     sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, scope=scope, open_browser=False)
 
-    # Print the authorization URL to the terminal
-    auth_url = sp_oauth.get_authorize_url()
-    print(f"Please visit this URL to authorize access: {auth_url}")
-
-    # Prompt the user for the authorization code from Spotify
-    auth_code = input("Enter the authorization code here: ")
-
     # Exchange the authorization code for an access token and refresh token
     token_info = sp_oauth.get_access_token(auth_code)
     refresh_token = token_info['refresh_token']
@@ -36,4 +29,7 @@ def generate_token(auth_code):
     print("Refresh token generated and saved to .env file")
 
 if __name__ == "__main__":
-    generate_token()
+    if len(sys.argv) > 1:
+        generate_token(sys.argv[1])
+    else:
+        print("Authorization code is missing.")
