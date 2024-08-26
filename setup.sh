@@ -12,12 +12,12 @@ extract_code_from_url() {
   echo "${url##*code=}"
 }
 
-# Install necessary packages with error handling
+# Install necessary packages
 echo "Installing necessary packages..."
 sudo apt-get update || { echo "Failed to update package list"; exit 1; }
 sudo apt-get install -y python3 python3-pip python3-venv git npm || { echo "Failed to install packages"; exit 1; }
 
-# Install pnpm with error handling
+# Install pnpm
 echo "Installing pnpm..."
 sudo npm install -g pnpm || { echo "Failed to install pnpm"; exit 1; }
 
@@ -89,4 +89,3 @@ chromium-browser --kiosk "$REDIRECT_URI" --noerrdialogs --disable-infobars --dis
 
 # Inform the user to activate the virtual environment when needed
 echo "To activate the virtual environment later, run 'source venv/bin/activate'"
-
