@@ -1,16 +1,16 @@
+import sys
 import os
-from dotenv import load_dotenv, set_key
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from dotenv import load_dotenv, set_key
 
-def generate_token():
+def generate_token(auth_code):
     # Load environment variables from .env file
     load_dotenv()
 
     client_id = os.getenv("SPOTIPY_CLIENT_ID")
     client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
     redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
-    username = os.getenv("SPOTIPY_USERNAME")
 
     # Define the scope for the permissions needed
     scope = 'user-read-currently-playing,user-modify-playback-state,playlist-read-private,playlist-read-collaborative'
@@ -27,8 +27,13 @@ def generate_token():
 
     # Exchange the authorization code for an access token and refresh token
     token_info = sp_oauth.get_access_token(auth_code)
-    @@ -27,7 +37,4 @@ def generate_token(auth_code):
-    print(f"Refresh token generated and saved to .env file for user: {username}")
+    refresh_token = token_info['refresh_token']
+
+    # Store the refresh token in the .env file
+    env_file = ".env"
+    set_key(env_file, "SPOTIPY_REFRESH_TOKEN", refresh_token)
+
+    print("Refresh token generated and saved to .env file")
 
 if __name__ == "__main__":
     generate_token()
