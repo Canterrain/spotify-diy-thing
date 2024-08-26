@@ -27,7 +27,7 @@ def generate_token():
 
     # Exchange the authorization code for an access token and refresh token
     token_info = sp_oauth.get_access_token(auth_code)
-	@@ -27,7 +37,4 @@ def generate_token(auth_code):
+    @@ -27,7 +37,4 @@ def generate_token(auth_code):
     print(f"Refresh token generated and saved to .env file for user: {username}")
 
 if __name__ == "__main__":
