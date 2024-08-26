@@ -66,8 +66,6 @@ echo "Setting executable permissions for generateToken.py..."
 chmod +x python/generateToken.py || { echo "Failed to set executable permissions for generateToken.py"; exit 1; }
 
 # Generate the Spotify token
-echo "Please visit the provided URL, authorize access, and then paste the full redirect URL here."
-read -p "Enter the full redirect URL: " redirect_url
 
 # Extract the authorization code from the URL
 authorization_code=$(extract_code_from_url "$redirect_url")
