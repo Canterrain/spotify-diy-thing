@@ -1,8 +1,8 @@
-mport sys
+import sys
 import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 
 def generate_token():
     # Load environment variables from .env file
@@ -31,8 +31,7 @@ def generate_token():
 
     # Store the refresh token in the .env file
     env_file = ".env"
-    with open(env_file, "a") as file:
-        file.write(f"SPOTIPY_REFRESH_TOKEN={refresh_token}\n")
+    set_key(env_file, "SPOTIPY_REFRESH_TOKEN", refresh_token)
 
     print("Refresh token generated and saved to .env file")
 
